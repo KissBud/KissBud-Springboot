@@ -1,0 +1,21 @@
+server:
+ port: 9000
+ servlet:
+   context-path: /api
+spring:
+  security:
+    user:
+      name: joker
+      password: 123
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/kissbud?useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true&characterEncoding=utf8
+#    username: root
+#    password: 123456
+    url: jdbc:mysql://139.159.190.0:3306/archive_business_instruction_system_test?useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true&characterEncoding=utf8
+    username: root
+    password: ktwlrjcs2018
+
+mybatis:
+  type-aliases-package: com.joker.kissbud.entity
+  mapper-locations: classpath*:/mappers/**/*.xml
