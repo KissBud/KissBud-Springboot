@@ -1,6 +1,7 @@
 package com.joker.kissbud.config;
 
-import io.swagger.annotations.Api;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -15,20 +16,30 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket createRestApi() {
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
-                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.any())
+                .paths(paths())
                 .build();
     }
+
+    // Describe your apis
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("利用swagger构建api文档")
-                .description("简单使用swagger2")
-                .version("1.0")
+                .title("吻芽音乐api文档说明")
+                .description("这个页面列出了所有Rest Api")
+                .version("0.0.1")
                 .build();
+    }
+
+    // Only select apis that matches the given Predicates.
+    private Predicate<String> paths() {
+        // Match all paths except /error
+        return Predicates.and(
+                PathSelectors.regex("/.*"),
+                Predicates.not(PathSelectors.regex("/error.*"))
+        );
     }
 }

@@ -5,7 +5,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,36 +30,26 @@ public class ${table.controllerName} {
      * ${table.comment}新增
      *
      * @param request
-     * @param bindingResult
      * @return ResponseEntity<?>
      */
     @ApiOperation(value = "${table.comment}新增", httpMethod = "POST", produces = "application/json", response = ResponseEntity.class)
     @ResponseBody
     @PostMapping("/add")
-    public ResponseEntity<?> add(@Valid @RequestBody ${entity} request, BindingResult bindingResult) throws UnsupportedEncodingException {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.ok(Result.body(request, ResultType.CHECK_ERROR).withMessage(bindingResult.getFieldError().getDefaultMessage()));
-        }
-        Result result = ${table.entityPath}Service.save(request);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> add(@RequestBody ${entity} request){
+        return ResponseEntity.ok(${table.entityPath}Service.save(request));
     }
 
     /**
      * ${table.comment}修改
      *
      * @param request
-     * @param bindingResult
      * @return ResponseEntity<?>
      */
     @ApiOperation(value = "${table.comment}修改", httpMethod = "POST", produces = "application/json", response = ResponseEntity.class)
     @ResponseBody
     @PostMapping("/edit")
-    public ResponseEntity<?> edit(@Valid @RequestBody ${entity} request, BindingResult bindingResult) throws UnsupportedEncodingException {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.ok(Result.body(request, ResultType.CHECK_ERROR).withMessage(bindingResult.getFieldError().getDefaultMessage()));
-        }
-        Result result = ${table.entityPath}Service.edit(request);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> edit(@RequestBody ${entity} request){
+        return ResponseEntity.ok(${table.entityPath}Service.saveOrUpdate(request));
     }
 
     /**
@@ -72,22 +61,20 @@ public class ${table.controllerName} {
     @ApiOperation(value = "${table.comment}删除", httpMethod = "GET", produces = "application/json", response = ResponseEntity.class)
     @ResponseBody
     @GetMapping("/delete")
-    public ResponseEntity<?> delete(@ApiParam(name = "id", value = "${table}id") @RequestParam(defaultValue = "", required = false) Long id) {
-        Result result = ${table.entityPath}Service.deleteById(id);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> delete(@ApiParam(name = "id", value = "${table.entityName}id") @RequestParam(defaultValue = "", required = false) Long id) {
+        return ResponseEntity.ok(${table.entityPath}Service.removeById(id));
     }
 
 
     /**
-     * ${table.comment}分页
+     * 所有${table.comment}
     *
      * @return ResponseEntity<?>
     */
-    @ApiOperation(value = "${table.comment}分页")
+    @ApiOperation(value = "所有${table.comment}")
     @GetMapping("/list")
-    public ResponseEntity<?> list(InstructionPageRequest request) {
-        Result result = instructionService.findPage(request);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> list() {
+        return ResponseEntity.ok(${table.entityPath}Service.list());
         }
 
     /**
@@ -99,8 +86,7 @@ public class ${table.controllerName} {
     @ResponseBody
     @GetMapping("/getById")
     public ResponseEntity<?> getById(
-    @RequestParam(defaultValue = "", required = true) Long id) throws UnsupportedEncodingException {
-        Result result = instructionService.getById(id);
-        return ResponseEntity.ok(result);
+    @RequestParam(defaultValue = "", required = true) Long id){
+        return ResponseEntity.ok(${table.entityPath}Service.getById(id));
     }
 }
