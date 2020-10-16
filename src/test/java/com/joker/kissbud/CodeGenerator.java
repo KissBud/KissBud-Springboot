@@ -53,6 +53,7 @@ public class CodeGenerator {
             }
         };
         String mapperPath= "templates/generator/mapper.xml.vm";
+        String listPath= "templates/generator/list.vue.vm";
         // 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
         // 自定义配置会被优先输出
@@ -61,6 +62,13 @@ public class CodeGenerator {
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
                 return projectPath + "/src/main/resources/mappers/" + pc.getModuleName() + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+            }
+        });
+        focList.add(new FileOutConfig(listPath) {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
+                return projectPath + "/src/test/fronted/" + pc.getModuleName() + "/" + tableInfo.getEntityName() + "List"+".vue";
             }
         });
         cfg.setFileOutConfigList(focList);
